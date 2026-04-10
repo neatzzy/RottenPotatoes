@@ -1,24 +1,71 @@
-# README
+# ER Diagram
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+```md
+USER ||--o{ REVIEW : "has_many"
+MOVIE ||--o{ REVIEW : "has_many"
+MOVIE ||--o{ MOVIE_GENRE : "has_many"
+GENRE ||--o{ MOVIE_GENRE : "has_many"
+PERSON ||--o{ ROLE : "has_many"
+MOVIE ||--o{ ROLE : "has_many"
 
-Things you may want to cover:
+    USER {
+        int id PK
+        string username
+        string email
+        string password_digest
+        datetime created_at
+        datetime updated_at
+    }
 
-* Ruby version
+    MOVIE {
+        int id PK
+        string title
+        text synopsis
+        date release_date
+        int duration_minutes
+        string poster_url
+        datetime created_at
+        datetime updated_at
+    }
 
-* System dependencies
+    REVIEW {
+        int id PK
+        int rating
+        text body
+        int user_id FK
+        int movie_id FK
+        datetime created_at
+        datetime updated_at
+    }
 
-* Configuration
+    PERSON {
+        int id PK
+        string name
+        text bio
+        date birth_date
+        datetime created_at
+        datetime updated_at
+    }
 
-* Database creation
+    ROLE {
+        int id PK
+        string role_type "Ex: Actor, Director"
+        string character_name
+        int person_id FK
+        int movie_id FK
+        datetime created_at
+        datetime updated_at
+    }
 
-* Database initialization
+    GENRE {
+        int id PK
+        string name
+        datetime created_at
+        datetime updated_at
+    }
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+    MOVIE_GENRE {
+        int movie_id FK
+        int genre_id FK
+    }
+```
