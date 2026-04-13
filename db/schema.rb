@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_13_133812) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_13_204121) do
   create_table "genres", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.string "name"
@@ -27,6 +27,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_13_133812) do
   end
 
   create_table "movies", force: :cascade do |t|
+    t.integer "age_rating", default: 0, null: false
     t.datetime "created_at", null: false
     t.integer "duration_minutes"
     t.string "poster_url"

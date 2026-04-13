@@ -27,6 +27,11 @@
   </div>
 
   <div>
+    <%= form.label :age_rating, style: "display: block" %>
+    <%= form.select :age_rating, Movie.age_ratings.keys.map { |key| [key.gsub('_', '-'), key] }, { prompt: "Select an age rating" } %>
+  </div>
+
+  <div>
     <%= form.label :duration_minutes, style: "display: block" %>
     <%= form.number_field :duration_minutes %>
   </div>
