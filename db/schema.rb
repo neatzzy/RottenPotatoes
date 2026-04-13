@@ -10,15 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_10_191300) do
-  create_table "classes", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
+ActiveRecord::Schema[8.1].define(version: 2026_04_13_133812) do
   create_table "genres", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "name", null: false
+    t.string "name"
     t.datetime "updated_at", null: false
   end
 
@@ -28,16 +23,16 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_191300) do
     t.integer "movie_id", null: false
     t.datetime "updated_at", null: false
     t.index ["genre_id"], name: "index_movie_genres_on_genre_id"
-    t.index ["movie_id", "genre_id"], name: "index_movie_genres_on_movie_id_and_genre_id", unique: true
     t.index ["movie_id"], name: "index_movie_genres_on_movie_id"
   end
 
   create_table "movies", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.integer "duration"
+    t.integer "duration_minutes"
+    t.string "poster_url"
     t.date "release_date"
     t.text "synopsis"
-    t.string "title", null: false
+    t.string "title"
     t.datetime "updated_at", null: false
   end
 
@@ -45,7 +40,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_191300) do
     t.text "bio"
     t.date "birth_date"
     t.datetime "created_at", null: false
-    t.string "name", null: false
+    t.string "name"
     t.datetime "updated_at", null: false
   end
 
@@ -61,7 +56,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_191300) do
   end
 
   create_table "roles", force: :cascade do |t|
-    t.string "character_name", optional: true
+    t.string "character_name"
     t.datetime "created_at", null: false
     t.integer "movie_id", null: false
     t.integer "person_id", null: false
@@ -73,11 +68,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_191300) do
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
-    t.string "email", null: false
+    t.string "email"
     t.string "password_digest"
     t.datetime "updated_at", null: false
-    t.string "username", null: false
-    t.index ["email"], name: "index_users_on_email", unique: true
+    t.string "username"
   end
 
   add_foreign_key "movie_genres", "genres"
