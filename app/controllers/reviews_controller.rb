@@ -21,14 +21,14 @@ class ReviewsController < ApplicationController
 
   # POST /reviews or /reviews.json
   def create
-    @movie = Movie.find(review_params[:movie_id])
+    @movie = Movie.find(params[:movie_id])
+
     @review = @movie.reviews.build(review_params)
-    @review.user = current_user
 
     if @review.save
-      redirect_to @review, notice: "Review was successfully created."
+      redirect_to @movie, notice: "Successfully submitted review."
     else
-      redirect_to @movie, alert: "Failed to create review: " + @review.errors.full_messages.to_sentence, status: :unprocessable_entity
+      redirect_to @movie, alert: "Error to submit review: #{@review.errors.full_messages.to_sentence}"
     end
   end
 
@@ -63,6 +63,6 @@ class ReviewsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def review_params
-      params.expect(review: [ :rating, :body, :user_id, :movie_id ])
+      params.expect(review: [:rating, :body, :user_id])
     end
 end
