@@ -6,7 +6,10 @@
 
 <div id="movies">
   <% @movies.each do |movie| %>
-    <%= render movie %>
+    <h2><%= movie.title %></h2>
+     <% if movie.poster_url.present? %>
+      <p><img src="<%= movie.poster_url %>" alt="<%= movie.title %> poster" style="max-width: 100px"></p>
+     <% end %>
     <p>
       <%= link_to "Show this movie", movie %>
     </p>
