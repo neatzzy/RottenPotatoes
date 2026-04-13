@@ -3,10 +3,57 @@
 <h1><%= @movie.title %></h1>
 <% if @movie.poster_url.present? %>
   <p><img src="<%= @movie.poster_url %>" alt="<%= @movie.title %> poster" style="max-width: 300px"></p>
+<% end %> 
 <p><%= @movie.synopsis %></p>
 <p>Release date: <%= @movie.release_date %></p>
 <p>Age rating: <%= @movie.age_rating %></p>
 <p>Duration: <%= @movie.duration_minutes %> minutes</p>
+
+<h3>Genres:</h3>
+<ul>
+  <% @movie.genres.each do |genre| %>
+    <li><%= genre.name %></li>
+  <% end %>
+</ul>
+
+<h3>Cast:</h3>
+<ul>
+  <% @movie.roles.each do |role| %>
+    <li><%= role.person.name %> as <%= role.character_name %></li>
+  <% end %>
+</ul>
+
+<h3>Reviews:</h3>
+<div id="reviews">
+  <% @movie.reviews.each do |review| %>
+    <% if review.persisted? %>
+      <div class="review">
+        <strong>Rating:</strong> <%= review.rating %>/10</strong>
+        <p><%= review.comment %></p>
+        <small> by <%= review.user.username %></small>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<%if logged_in? %>
+    <h4>Submit a review:</h4>
+    <%= form_with(model: [@movie, @review]) do |f| %>
+        <div>
+            <%= f.label :rating, "Rating (1-10)" %><br>
+            <%= f.number_field :rating, in: 1..10 %>
+        </div>
+        <div>
+            <%= f.label :comment, "Comment" %><br>
+            <%= f.text_area :comment %>
+        </div>
+        <div>
+            <%= f.hidden_field :user_id, value: current_user.id %>
+            <%= f.submit "Submit Review" %>
+        </div>
+      <% end %>
+    <% else %>
+      <p><%= link_to "Log in to submit a review", login_path %></p>
 <% end %>
 
 <div>
