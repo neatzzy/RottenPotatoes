@@ -1,12 +1,13 @@
 # ER Diagram
 
 ```mermaid
-USER ||--o{ REVIEW : "has_many"
-MOVIE ||--o{ REVIEW : "has_many"
-MOVIE ||--o{ MOVIE_GENRE : "has_many"
-GENRE ||--o{ MOVIE_GENRE : "has_many"
-PERSON ||--o{ ROLE : "has_many"
-MOVIE ||--o{ ROLE : "has_many"
+erDiagram
+    USER ||--o{ REVIEW : "has_many"
+    MOVIE ||--o{ REVIEW : "has_many"
+    MOVIE ||--o{ MOVIE_GENRE : "has_many"
+    GENRE ||--o{ MOVIE_GENRE : "has_many"
+    PERSON ||--o{ ROLE : "has_many"
+    MOVIE ||--o{ ROLE : "has_many"
 
     USER {
         int id PK
@@ -50,7 +51,7 @@ MOVIE ||--o{ ROLE : "has_many"
     ROLE {
         int id PK
         string role_type "Ex: Actor, Director"
-        string character_name
+        string character_name 
         int person_id FK
         int movie_id FK
         datetime created_at
