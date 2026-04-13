@@ -1,11 +1,13 @@
 Rails.application.routes.draw do
   resources :movie_genres
-  resources :reviews
+  # resources :reviews
   resources :people
   resources :roles
   resources :genres
   resources :users
-  resources :movies
+  resources :movies do
+    resources :reviews, only: [:create, :destroy]
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
