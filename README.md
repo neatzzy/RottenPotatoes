@@ -1,6 +1,6 @@
 # ER Diagram
 
-```md
+```mermaid
 USER ||--o{ REVIEW : "has_many"
 MOVIE ||--o{ REVIEW : "has_many"
 MOVIE ||--o{ MOVIE_GENRE : "has_many"
