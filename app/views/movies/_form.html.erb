@@ -41,6 +41,37 @@
     <%= form.text_field :poster_url %>
   </div>
 
+  <div style="margin-top: 30px; padding: 15px; border: 1px solid #ddd; background-color: #fcfcfc;">
+    <h3>Elenco e Equipe</h3>
+    
+    <%= form.fields_for :roles do |role_fields| %>
+      <div style="margin-bottom: 20px; padding: 10px; border-bottom: 1px dashed #ccc;">
+        
+        <div>
+          <%= role_fields.label :person_id, "Pessoa" %>
+          <%= role_fields.collection_select :person_id, Person.all, :id, :name, { prompt: "Selecione uma pessoa..." } %>
+        </div>
+
+        <div>
+          <%= role_fields.label :role_type, "Função" %>
+          <%= role_fields.select :role_type, Role.role_types.keys.map { |k| [k.humanize, k] } %>
+        </div>
+
+        <div>
+          <%= role_fields.label :character_name, "Nome do Personagem" %>
+          <%= role_fields.text_field :character_name %>
+        </div>
+
+        <% if role_fields.object.persisted? %>
+          <div style="margin-top: 5px;">
+            <%= role_fields.check_box :_destroy %>
+            <%= role_fields.label :_destroy, "Remover integrante", style: "color: red; display: inline;" %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+
   <div>
     <%= form.submit %>
   </div>

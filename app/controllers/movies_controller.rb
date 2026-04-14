@@ -8,16 +8,19 @@ class MoviesController < ApplicationController
 
   # GET /movies/1 or /movies/1.json
   def show
+    @movie = Movie.includes(roles: :person).find(params.expect(:id))
     @review = @movie.reviews.build
   end
 
   # GET /movies/new
   def new
     @movie = Movie.new
+    @movie.roles.build
   end
 
   # GET /movies/1/edit
   def edit
+    @movie.roles.build
   end
 
   # POST /movies or /movies.json
@@ -66,6 +69,8 @@ class MoviesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def movie_params
-      params.expect(movie: [ :title, :synopsis, :release_date, :age_rating, :duration_minutes, :poster_url ])
+      params.require(:movie).permit(
+      :title, :synopsis, :release_date, :age_rating, :duration_minutes, :poster_url,
+      roles_attributes: [:id, :person_id, :role_type, :character_name, :_destroy])
     end
 end
