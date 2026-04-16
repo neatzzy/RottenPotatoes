@@ -48,24 +48,29 @@
       <div style="margin-bottom: 20px; padding: 10px; border-bottom: 1px dashed #ccc;">
         
         <div>
-          <%= role_fields.label :person_id, "Pessoa" %>
-          <%= role_fields.collection_select :person_id, Person.all, :id, :name, { prompt: "Selecione uma pessoa..." } %>
+          <%= role_fields.label :person_name, "Person Name(Search or add new)" %>
+          <%= role_fields.text_field :person_name, list: "people-options", autocomplete: "off" %>
+          <datalist id="people-options">
+            <% Person.pluck(:name).each do |name| %>
+              <option value="<%= name %>"></option>
+            <% end %>
+          </datalist>
         </div>
 
         <div>
-          <%= role_fields.label :role_type, "Função" %>
+          <%= role_fields.label :role_type, "Role" %>
           <%= role_fields.select :role_type, Role.role_types.keys.map { |k| [k.humanize, k] } %>
         </div>
 
         <div>
-          <%= role_fields.label :character_name, "Nome do Personagem" %>
+          <%= role_fields.label :character_name, "Character Name" %>
           <%= role_fields.text_field :character_name %>
         </div>
 
         <% if role_fields.object.persisted? %>
           <div style="margin-top: 5px;">
             <%= role_fields.check_box :_destroy %>
-            <%= role_fields.label :_destroy, "Remover integrante", style: "color: red; display: inline;" %>
+            <%= role_fields.label :_destroy, "Remove Member", style: "color: red; display: inline;" %>
           </div>
         <% end %>
       </div>
