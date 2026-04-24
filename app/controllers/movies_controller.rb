@@ -8,7 +8,7 @@ class MoviesController < ApplicationController
 
   # GET /movies/1 or /movies/1.json
   def show
-    @movie = Movie.includes(roles: :person).find(params.expect(:id))
+    @movie = Movie.includes(roles: :person).find(params[:id])
     @review = @movie.reviews.build
   end
 
@@ -64,14 +64,14 @@ class MoviesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_movie
-      @movie = Movie.find(params.expect(:id))
+      @movie = Movie.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def movie_params
-      params.expect(movie: [ 
+      params.require(:movie).permit(
         :title, :synopsis, :release_date, :age_rating, :duration_minutes, :poster_url,
-        roles_attributes: [ :id, :person_name, :role_type, :character_name, :_destroy ] 
-      ])
+        roles_attributes: [:id, :person_name, :role_type, :character_name, :_destroy]
+      )
     end
 end

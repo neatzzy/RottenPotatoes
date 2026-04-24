@@ -2,7 +2,6 @@
   <% if movie.errors.any? %>
     <div style="color: red">
       <h2><%= pluralize(movie.errors.count, "error") %> prohibited this movie from being saved:</h2>
-
       <ul>
         <% movie.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -42,39 +41,25 @@
   </div>
 
   <div style="margin-top: 30px; padding: 15px; border: 1px solid #ddd; background-color: #fcfcfc;">
-    <h3>Elenco e Equipe</h3>
-    
-    <%= form.fields_for :roles do |role_fields| %>
-      <div style="margin-bottom: 20px; padding: 10px; border-bottom: 1px dashed #ccc;">
-        
-        <div>
-          <%= role_fields.label :person_name, "Person Name(Search or add new)" %>
-          <%= role_fields.text_field :person_name, list: "people-options", autocomplete: "off" %>
-          <datalist id="people-options">
-            <% Person.pluck(:name).each do |name| %>
-              <option value="<%= name %>"></option>
-            <% end %>
-          </datalist>
-        </div>
+    <h3>Cast and Crew</h3>
 
-        <div>
-          <%= role_fields.label :role_type, "Role" %>
-          <%= role_fields.select :role_type, Role.role_types.keys.map { |k| [k.humanize, k] } %>
-        </div>
+    <datalist id="people-options">
+      <% Person.pluck(:name).each do |name| %>
+        <option value="<%= name %>"></option>
+      <% end %>
+    </datalist>
 
-        <div>
-          <%= role_fields.label :character_name, "Character Name" %>
-          <%= role_fields.text_field :character_name %>
-        </div>
+    <div>
+      <%= form.fields_for :roles do |role_fields| %>
+        <%= render "role_fields", role_fields: role_fields %>
+      <% end %>
+    </div>
 
-        <% if role_fields.object.persisted? %>
-          <div style="margin-top: 5px;">
-            <%= role_fields.check_box :_destroy %>
-            <%= role_fields.label :_destroy, "Remove Member", style: "color: red; display: inline;" %>
-          </div>
-        <% end %>
-      </div>
-    <% end %>
+    <template>
+      <%= form.fields_for :roles, Role.new, child_index: "NEW_RECORD" do |role_fields| %>
+        <%= render "role_fields", role_fields: role_fields %>
+      <% end %>
+    </template>
   </div>
 
   <div>

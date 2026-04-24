@@ -1,0 +1,24 @@
+<div class="role-fields" style="border: 1px solid #e6e6e6; padding: 10px; margin-bottom: 10px;">
+  <%= role_fields.hidden_field :id %>
+
+  <div>
+    <%= role_fields.label :person_name, "Name", style: "display: block" %>
+    <%= role_fields.text_field :person_name, list: "people-options" %>
+    <%= role_fields.hidden_field :person_id %>
+  </div>
+
+  <div>
+    <%= role_fields.label :role_type, "Role", style: "display: block" %>
+    <%= role_fields.select :role_type, Role.role_types.keys.map { |k| [k.titleize, k] }, { prompt: "Select a role" } %>
+  </div>
+
+  <div>
+    <%= role_fields.label :character_name, "Character Name", style: "display: block" %>
+    <%= role_fields.text_field :character_name %>
+  </div>
+
+  <div style="margin-top:8px;">
+    <%= role_fields.check_box :_destroy %>
+    <%= role_fields.label :_destroy, "Remover" %>
+  </div>
+</div>
