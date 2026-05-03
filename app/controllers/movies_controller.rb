@@ -61,6 +61,31 @@ class MoviesController < ApplicationController
     end
   end
 
+  # POST /movies/search_tmdb
+  def search_tmdb
+    query = params[:search_terms].to_s.strip
+    if query.blank?
+      redirect_to root_path, notice: "Please enter a search term"
+      return
+    end
+    api_key = ENV["TMDB_API_KEY"].to_s.strip
+    @tmdb_results = []
+
+    begin
+      service = TmdbService.new(api_key)
+      @tmdb_results = service.search(query)
+    rescue StandardError => e
+      Rails.logger.error("TMDb search failed: #{e.class} - #{e.message}")
+      @tmdb_results = []
+    end
+
+    if @tmdb_results.empty?
+      redirect_to root_path, notice: "'#{query}' was not found in TMDb"
+    else
+      render :search_results
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_movie

@@ -4,6 +4,19 @@
 
 <h1>Movies</h1>
 
+<div id="tmdb-search">
+  <h2>Search TMDb for a movie</h2>
+  <%= form_with url: search_tmdb_movies_path, method: :post, local: true do %>
+    <div>
+      <%= label_tag 'search_terms', 'Search Terms' %>
+      <%= text_field_tag 'search_terms', nil %>
+    </div>
+    <div>
+      <%= submit_tag 'Search TMDb' %>
+    </div>
+  <% end %>
+</div>
+
 <div id="movies">
   <% @movies.each do |movie| %>
     <h2><%= movie.title %></h2>
