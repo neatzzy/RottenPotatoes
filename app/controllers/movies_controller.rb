@@ -64,6 +64,10 @@ class MoviesController < ApplicationController
   # POST /movies/search_tmdb
   def search_tmdb
     query = params[:search_terms].to_s.strip
+    if query.blank?
+      redirect_to root_path, notice: "Please enter a search term"
+      return
+    end
     api_key = ENV["TMDB_API_KEY"].to_s.strip
     @tmdb_results = []
 
@@ -75,30 +79,10 @@ class MoviesController < ApplicationController
       @tmdb_results = []
     end
 
-    respond_to do |format|
-      format.html do
-        if query.blank?
-          redirect_to root_path, notice: "Please enter a search term"
-        elsif @tmdb_results.empty?
-          redirect_to root_path, notice: "'#{query}' was not found in TMDb"
-        else
-          render :search_results
-        end
-      end
-
-      format.json do
-        results = @tmdb_results.first(10).map do |r|
-          {
-            id: r['id'],
-            title: r['title'],
-            release_date: r['release_date'],
-            tmdb_url: "https://www.themoviedb.org/movie/#{r['id']}",
-            poster_path: r['poster_path']
-          }
-        end
-
-        render json: results
-      end
+    if @tmdb_results.empty?
+      redirect_to root_path, notice: "'#{query}' was not found in TMDb"
+    else
+      render :search_results
     end
   end
 
