@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    volumes:
+      - .:/rails
+    ports:
+      - "3000:3000"   # <-- Isso é o que faz a mágica de ligar o container ao seu navegador
+    environment:
+      - RAILS_ENV=development # <-- Mudamos para development para você ver a tela normalmente

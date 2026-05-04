@@ -6,6 +6,9 @@ Rails.application.routes.draw do
   resources :genres
   resources :users
   resources :movies do
+    collection do
+      post 'search_tmdb'
+    end
     resources :reviews, only: [:create, :destroy]
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -18,8 +21,9 @@ Rails.application.routes.draw do
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
-  # Defines the root path route ("/")
-  root "movies#index"
+  get '/home', to: 'movies#index', as: 'home'
+  root to: redirect('/home')
+  
   get "login", to: "sessions#new", as: :login
   post "login", to: "sessions#create"
   delete "logout", to: "sessions#destroy", as: :logout

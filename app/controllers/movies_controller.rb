@@ -3,7 +3,11 @@ class MoviesController < ApplicationController
 
   # GET /movies or /movies.json
   def index
-    @movies = Movie.all
+    if params[:sort] == "title"
+      @movies = Movie.order(:title)
+    else
+      @movies = Movie.all
+    end
   end
 
   # GET /movies/1 or /movies/1.json
@@ -29,7 +33,7 @@ class MoviesController < ApplicationController
 
     respond_to do |format|
       if @movie.save
-        format.html { redirect_to @movie, notice: "Movie was successfully created." }
+        format.html { redirect_to home_path, notice: "Movie was successfully created." }
         format.json { render :show, status: :created, location: @movie }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -56,9 +60,15 @@ class MoviesController < ApplicationController
     @movie.destroy!
 
     respond_to do |format|
-      format.html { redirect_to movies_path, notice: "Movie was successfully destroyed.", status: :see_other }
+      format.html { redirect_to home_path, notice: "Movie was successfully destroyed.", status: :see_other }
       format.json { head :no_content }
     end
+  end
+
+  def search_tmdb
+    search_movie = params[:search_terms]
+    flash[:warning] = "'#{search_movie}' was not found in TMDb."
+    redirect_to home_path, status: :see_other
   end
 
   private

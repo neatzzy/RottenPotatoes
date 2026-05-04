@@ -4,6 +4,10 @@
 
 <h1>Movies</h1>
 
+<p>
+  Ordenar por: <%= link_to "Movie Title", home_path(sort: "title"), id: "title_header" %>
+</p>
+
 <div id="movies">
   <% @movies.each do |movie| %>
     <h2><%= movie.title %></h2>
@@ -17,4 +21,16 @@
   <% end %>
 </div>
 
-<%= link_to "New movie", new_movie_path %>
+<h2>Search TMDb for a movie</h2>
+
+<%= form_with url: search_tmdb_movies_path, method: :post, local: true, data: { turbo: false } do |form| %>
+  <div>
+    <%= form.label :search_terms, "Search Terms" %> 
+    <%= form.text_field :search_terms, id: "search_terms" %>
+  </div>
+  <%= form.submit "Search TMDb" %>
+<% end %>
+
+<hr>
+
+<%= link_to "Add new movie", new_movie_path%>

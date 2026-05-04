@@ -37,3 +37,15 @@
 # Possible values are :truncation and :transaction
 # The :transaction strategy is faster, but might give you threading problems.
 # See https://github.com/cucumber/cucumber-rails/blob/master/features/choose_javascript_database_strategy.feature
+
+require 'cucumber/rails'
+require 'capybara/cucumber' 
+
+Capybara.default_driver = :rack_test
+
+ActionController::Base.allow_forgery_protection = false
+
+DatabaseCleaner.strategy = :transaction
+
+Capybara.default_host = 'http://127.0.0.1'
+Capybara.app_host = 'http://127.0.0.1'
