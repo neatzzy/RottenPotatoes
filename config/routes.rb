@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     resources :reviews, only: [:create, :destroy]
     collection do
       post :search_tmdb
+      get :search_tmdb
     end
   end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html

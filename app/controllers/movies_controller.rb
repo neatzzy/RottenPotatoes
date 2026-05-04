@@ -3,7 +3,7 @@ class MoviesController < ApplicationController
 
   # GET /movies or /movies.json
   def index
-    @movies = Movie.all
+    @movies = Movie.order(sort_column => sort_direction)
   end
 
   # GET /movies/1 or /movies/1.json
@@ -29,7 +29,7 @@ class MoviesController < ApplicationController
 
     respond_to do |format|
       if @movie.save
-        format.html { redirect_to @movie, notice: "Movie was successfully created." }
+        format.html { redirect_to root_path, notice: "Movie was successfully created." }
         format.json { render :show, status: :created, location: @movie }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -64,10 +64,6 @@ class MoviesController < ApplicationController
   # POST /movies/search_tmdb
   def search_tmdb
     query = params[:search_terms].to_s.strip
-    if query.blank?
-      redirect_to root_path, notice: "Please enter a search term"
-      return
-    end
     api_key = ENV["TMDB_API_KEY"].to_s.strip
     @tmdb_results = []
 
@@ -79,10 +75,30 @@ class MoviesController < ApplicationController
       @tmdb_results = []
     end
 
-    if @tmdb_results.empty?
-      redirect_to root_path, notice: "'#{query}' was not found in TMDb"
-    else
-      render :search_results
+    respond_to do |format|
+      format.html do
+        if query.blank?
+          redirect_to root_path, notice: "Please enter a search term"
+        elsif @tmdb_results.empty?
+          redirect_to root_path, notice: "'#{query}' was not found in TMDb"
+        else
+          render :search_results
+        end
+      end
+
+      format.json do
+        results = @tmdb_results.first(10).map do |r|
+          {
+            id: r['id'],
+            title: r['title'],
+            release_date: r['release_date'],
+            tmdb_url: "https://www.themoviedb.org/movie/#{r['id']}",
+            poster_path: r['poster_path']
+          }
+        end
+
+        render json: results
+      end
     end
   end
 
@@ -98,5 +114,13 @@ class MoviesController < ApplicationController
         :title, :synopsis, :release_date, :age_rating, :duration_minutes, :poster_url,
         roles_attributes: [:id, :person_name, :role_type, :character_name, :_destroy]
       )
+    end
+
+    def sort_column
+      %w[title age_rating duration_minutes].include?(params[:sort]) ? params[:sort] : 'title'
+    end
+
+    def sort_direction
+      %w[asc desc].include?(params[:direction]) ? params[:direction] : 'asc'
     end
 end

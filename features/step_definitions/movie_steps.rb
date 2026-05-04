@@ -35,3 +35,18 @@ end
 When /I sort movies by title/ do
   click_link "Movie Title"
 end
+
+When /I follow "(.*)"/ do |link|
+  click_link link
+end
+
+Then /I should be on the Create New Movie page/ do
+  unless page.current_path == "/movies/new"
+    raise "Expected to be on '/movies/new' but was #{page.current_path}"
+  end
+end
+
+And /I select "(.*)" from "(.*)"/ do |option, select_box|
+  select option, from: select_box
+end
+

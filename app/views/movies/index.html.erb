@@ -9,25 +9,43 @@
   <%= form_with url: search_tmdb_movies_path, method: :post, local: true do %>
     <div>
       <%= label_tag 'search_terms', 'Search Terms' %>
-      <%= text_field_tag 'search_terms', nil %>
+      <%= text_field_tag 'search_terms', nil, data: { controller: 'tmdb-search', action: 'input->tmdb-search#search', tmdb_search_target: 'input' }, autocomplete: 'off' %>
     </div>
     <div>
       <%= submit_tag 'Search TMDb' %>
     </div>
   <% end %>
+
+  <div id="tmdb-live-results" data-tmdb-search-target="results" style="margin-top:8px"></div>
 </div>
 
 <div id="movies">
-  <% @movies.each do |movie| %>
-    <h2><%= movie.title %></h2>
-    <p><strong>ID:</strong> <%= movie.id %></p>
-     <% if movie.poster_url.present? %>
-      <p><img src="<%= movie.poster_url %>" alt="<%= movie.title %> poster" style="max-width: 100px"></p>
-     <% end %>
-    <p>
-      <%= link_to "Show this movie", movie %>
-    </p>
-  <% end %>
+  <table>
+    <thead>
+      <tr>
+        <th><%= sortable('title', 'Title') %></th>
+        <th><%= sortable('age_rating', 'Age Rating') %></th>
+        <th><%= sortable('duration_minutes', 'Duration (min)') %></th>
+        <th>Poster</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @movies.each do |movie| %>
+        <tr>
+          <td><%= link_to movie.title, movie %></td>
+          <td><%= movie.age_rating %></td>
+          <td><%= movie.duration_minutes %></td>
+          <td>
+            <% if movie.poster_url.present? %>
+              <img src="<%= movie.poster_url %>" alt="<%= movie.title %> poster" style="max-width: 50px">
+            <% end %>
+          </td>
+          <td><%= link_to 'Show', movie %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
 </div>
 
 <%= link_to "New movie", new_movie_path %>
