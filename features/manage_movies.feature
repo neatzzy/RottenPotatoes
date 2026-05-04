@@ -8,13 +8,13 @@ Scenario: View movie list after adding 2 movies (Imperative)
     And I select "PG" from "Age rating"
     And I press "Create Movie"
     Then I should be on the RottenPotatoes home page
-    When I follow "Add new movie"
+    When I follow "New movie"
     Then I should be on the Create New Movie page
     When I fill in "Title" with "Apocalypse Now"
     And I select "R" from "Age rating"
-    And I press "Create movie"
+    And I press "Create Movie"
     Then I should be on the RottenPotatoes home page
-    When I follow "Movie Title"
+    When I follow "Title"
     Then I should see "Apocalypse Now" before "Zorro"
 
 Scenario: View movie list sorted alphabetically (Declarative)

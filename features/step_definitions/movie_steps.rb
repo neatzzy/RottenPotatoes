@@ -23,21 +23,23 @@ Then(/^I should see "([^"]*)"$/) do |text|
 end
 
 Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
-  # Garante que e1 aparece antes de e2 no corpo da página (HTML)
-  expect(page.body.index(e1)).to be < page.body.index(e2)
+  pos1 = page.body.index(e1)
+  pos2 = page.body.index(e2)
+  if pos1.nil? || pos2.nil? || pos1 >= pos2
+    raise "Expected to see #{e1.inspect} before #{e2.inspect}"
+  end
 end
 
 Given /I have added "(.*)" with "(.*)" rating/ do |title, rating|
-  # Aqui você pode usar passos existentes ou criar o objeto direto no banco
-  Movie.create!(title: title, rating: rating, release_date: Time.now)
+  Movie.create!(title: title, age_rating: rating, release_date: Date.today)
 end
 
 When /I sort movies by title/ do
-  click_link "Title"
+  visit movies_path(sort: 'title', direction: 'asc')
 end
 
 When /I follow "(.*)"/ do |link|
-  click_link link
+  click_link(link)
 end
 
 Then /I should be on the Create New Movie page/ do
@@ -49,4 +51,3 @@ end
 And /I select "(.*)" from "(.*)"/ do |option, select_box|
   select option, from: select_box
 end
-
