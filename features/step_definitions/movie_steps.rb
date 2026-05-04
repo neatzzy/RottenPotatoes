@@ -33,7 +33,7 @@ Given /I have added "(.*)" with "(.*)" rating/ do |title, rating|
 end
 
 When /I sort movies by title/ do
-  click_link "Movie Title"
+  click_link "Title"
 end
 
 When /I follow "(.*)"/ do |link|
