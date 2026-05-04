@@ -48,11 +48,10 @@ Then('I should see {string} before {string}') do |value1, value2|
   assert_match(/#{value1}.*#{value2}/m, page.body)
 end
 
-Given('I have added the movie {string} with rating {string}') do |title, rating|
-  visit "/movies/new"
-  fill_in "Title", with: title
-  select rating, from: "Rating"
-  click_button "Save Changes"
+Given('I have added the movies') do |table|
+  table.hashes.each do |movie|
+    Movie.create!(title: movie['title'], age_rating: movie['age_rating'])
+  end
 end
 
 When('I sort the movie list by title') do
